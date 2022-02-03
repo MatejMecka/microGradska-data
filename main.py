@@ -1,11 +1,18 @@
 import pandas as pd
-from get_data import getData
 import hashlib
 from pathlib import Path
 import datetime
+import os
+
+from get_data import getData
+from get_genders import guessGenders
 
 date_to_parse = datetime.datetime.now() - datetime.timedelta(days=10)
-date = f"{date_to_parse.day:02d}-{date_to_parse.month:02d}-{date_to_parse.year}"
+#date = os.environ.get('SCRAPE_DATE') if os.environ.get('SCRAPE_DATE') else f"{date_to_parse.day:02d}-{date_to_parse.month:02d}-{date_to_parse.year}"
+date = "05-01-2022"
+search_sex = True if os.environ.get("SCRAPE_SEX") else False
+
+print("Downloading website data...")
 
 teoretska = getData(date, 1)
 poligon = getData(date, 2)
@@ -15,6 +22,7 @@ dataset_names = ['teoretska', 'poligon', 'gradska']
 datasets = [teoretska, poligon, gradska]
 
 for ind, dataset in enumerate(datasets):
+    print(f"Processing {dataset_names[ind]} dataset...")
     try:
         df = pd.read_html(dataset) # this parses all the tables in webpages to a list
     except:
@@ -22,6 +30,10 @@ for ind, dataset in enumerate(datasets):
         continue
     df = df[0]
     df = df.iloc[: , 1:]
+
+    if search_sex:
+        print("Searching for Candidate's sexes... This may take some time")
+        df = guessGenders(df)
 
     print(df.head())
 
