@@ -8,8 +8,7 @@ from get_data import getData
 from get_genders import guessGenders
 
 date_to_parse = datetime.datetime.now() - datetime.timedelta(days=10)
-#date = os.environ.get('SCRAPE_DATE') if os.environ.get('SCRAPE_DATE') else f"{date_to_parse.day:02d}-{date_to_parse.month:02d}-{date_to_parse.year}"
-date = "05-01-2022"
+date = os.environ.get('SCRAPE_DATE') if os.environ.get('SCRAPE_DATE') else f"{date_to_parse.day:02d}-{date_to_parse.month:02d}-{date_to_parse.year}"
 search_sex = True if os.environ.get("SCRAPE_SEX") else False
 
 print("Downloading website data...")
