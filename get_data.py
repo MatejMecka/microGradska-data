@@ -28,5 +28,5 @@ def getData(date: str, type: int):
     }
 
     response = requests.post('http://sic1.ddnsfree.com:8008/avirn/', headers=headers, data=data)
-  return response.text
+    return response.text
 
