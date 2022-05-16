@@ -11,6 +11,7 @@ date_to_parse = datetime.datetime.now() - datetime.timedelta(days=10)
 date = os.environ.get('SCRAPE_DATE') if os.environ.get('SCRAPE_DATE') else f"{date_to_parse.day:02d}-{date_to_parse.month:02d}-{date_to_parse.year}"
 search_sex = True if os.environ.get("SCRAPE_SEX") else False
 
+print(f"Parsing for date: {date}")
 print("Downloading website data...")
 
 teoretska = getData(date, 1)
@@ -24,8 +25,8 @@ for ind, dataset in enumerate(datasets):
     print(f"Processing {dataset_names[ind]} dataset...")
     try:
         df = pd.read_html(dataset) # this parses all the tables in webpages to a list
-    except:
-        print("Data does not exist")
+    except Exception as e:
+        print(f"Exception occured! Data either does not exist or something else happened. Message: {e}")
         continue
     df = df[0]
     df = df.iloc[: , 1:]
