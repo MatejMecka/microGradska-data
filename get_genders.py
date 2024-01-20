@@ -25,8 +25,9 @@ def guessGenders(df):
                 name_data = Genderize().get([name])
                 sexes.append(name_data[0]['gender'])
                 probabilities.append(name_data[0]["probability"])
-            except GenderizeException:
+            except GenderizeException as e:
                 print("Error fetching data from Gender API")
+                print(e)
             bar()
 
     df["Пол"] = sexes
